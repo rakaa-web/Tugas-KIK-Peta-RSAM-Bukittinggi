@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>
+Peta Interaktif RSAM Bukittinggi
+</title>
+
+
+<!-- LEAFLET CSS -->
+
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+
+<style>
+
+/* =========================
+   DASAR
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    background: white;
+
+    z-index: 1000;
+
+    padding: 12px;
+
+    text-align: center;
+
+    box-shadow:
+    0 2px 8px rgba(0,0,0,0.3);
+}
+
+
+.header h2 {
+
+    margin: 0;
+
+    font-size: 18px;
+}
+
+
+.header p {
+
+    margin: 4px 0 0;
+
+    font-size: 12px;
+
+    color: #555;
+}
+
+
+/* =========================
+   PETA
+========================= */
+
+#map {
+
+    width: 100%;
+
+    height: 100vh;
+}
+
+
+/* =========================
+   POPUP
+========================= */
+
+.popup {
+
+    width: 250px;
+
+}
+
+
+.popup img {
+
+    width: 100%;
+
+    height: 150px;
+
+    object-fit: cover;
+
+    border-radius: 8px;
+
+    display: block;
+
+    margin-bottom: 10px;
+}
+
+
+.popup h3 {
+
+    margin: 5px 0 10px;
+
+    font-size: 18px;
+}
+
+
+.popup p {
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    margin: 6px 0;
+}
+
+
+/* =========================
+   TOMBOL
+========================= */
+
+.btn {
+
+    display: block;
+
+    padding: 9px;
+
+    margin-top: 10px;
+
+    background: #1976d2;
+
+    color: white;
+
+    text-decoration: none;
+
+    text-align: center;
+
+    border-radius: 6px;
+
+}
+
+
+/* =========================
+   LEGENDA
+========================= */
+
+.legend {
+
+    background: white;
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    box-shadow:
+    0 2px 8px rgba(0,0,0,0.3);
+
+    line-height: 24px;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<div class="header">
+
+<h2>
+🏥 Peta Interaktif RSAM
+</h2>
+
+<p>
+RSUD Dr. Achmad Mochtar Bukittinggi
+</p>
+
+</div>
+
+
+<!-- =========================
+     PETA
+========================= -->
+
+<div id="map"></div>
+
+
+<!-- LEAFLET -->
+
+<script
+src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+
+<script>
+
+
+// ==========================================
+// KOORDINAT RSAM
+// ==========================================
+
+const RSAM = [
+    -0.29964,
+    100.36577
+];
+
+
+// ==========================================
+// MEMBUAT PETA
+// ==========================================
+
+const map = L.map("map").setView(
+    RSAM,
+    18
+);
+
+
+// ==========================================
+// OPEN STREET MAP
+// ==========================================
+
+L.tileLayer(
+
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+
+    {
+
+        maxZoom: 21,
+
+        attribution:
+        "&copy; OpenStreetMap contributors"
+
+    }
+
+).addTo(map);
+
+
+// ==========================================
+// MARKER RUMAH SAKIT
+// ==========================================
+
+L.marker(RSAM)
+
+.addTo(map)
+
+.bindPopup(`
+
+<div class="popup">
+
+<h3>
+🏥 RSAM Bukittinggi
+</h3>
+
+<p>
+RSUD Dr. Achmad Mochtar
+Bukittinggi.
+</p>
+
+<p>
+📍 Bukittinggi,
+Sumatera Barat
+</p>
+
+</div>
+
+`);
+
+
+// ==========================================
+// KOORDINAT UGD
+// ==========================================
+
+// CONTOH
+
+const UGD = [
+    -0.29950,
+    100.36570
+];
+
+
+// ==========================================
+// MARKER UGD
+// ==========================================
+
+L.marker(UGD)
+
+.addTo(map)
+
+.bindPopup(`
+
+<div class="popup">
+
+<img
+src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=600&q=80"
+alt="UGD"
+>
+
+<h3>
+🚑 UGD / IGD
+</h3>
+
+<p>
+<b>Nama:</b><br>
+Instalasi Gawat Darurat
+</p>
+
+<p>
+<b>Fungsi:</b><br>
+Tempat pelayanan dan
+penanganan pasien dalam
+kondisi darurat.
+</p>
+
+<p>
+<b>Lokasi:</b><br>
+Area Instalasi Gawat Darurat.
+</p>
+
+<p>
+<b>Koordinat:</b><br>
+${UGD[0]}, ${UGD[1]}
+</p>
+
+<a
+class="btn"
+href="https://www.google.com/maps/search/?api=1&query=${UGD[0]},${UGD[1]}"
+target="_blank"
+>
+📍 Buka Google Maps
+</a>
+
+</div>
+
+`);
+
+
+// ==========================================
+// KOORDINAT TOILET
+// ==========================================
+
+const TOILET = [
+    -0.29970,
+    100.36585
+];
+
+
+// ==========================================
+// MARKER TOILET
+// ==========================================
+
+L.marker(TOILET)
+
+.addTo(map)
+
+.bindPopup(`
+
+<div class="popup">
+
+<img
+src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80"
+alt="Toilet"
+>
+
+<h3>
+🚻 Toilet
+</h3>
+
+<p>
+<b>Nama:</b><br>
+Toilet Pengunjung
+</p>
+
+<p>
+<b>Fungsi:</b><br>
+Fasilitas sanitasi untuk
+pasien, pengunjung,
+dan petugas.
+</p>
+
+<p>
+<b>Lokasi:</b><br>
+Area pelayanan rumah sakit.
+</p>
+
+<p>
+<b>Koordinat:</b><br>
+${TOILET[0]}, ${TOILET[1]}
+</p>
+
+<a
+class="btn"
+href="https://www.google.com/maps/search/?api=1&query=${TOILET[0]},${TOILET[1]}"
+target="_blank"
+>
+📍 Buka Google Maps
+</a>
+
+</div>
+
+`);
+
+
+// ==========================================
+// KOORDINAT RUANG RAWAT
+// ==========================================
+
+const RAWAT = [
+    -0.29940,
+    100.36590
+];
+
+
+// ==========================================
+// MARKER RUANG RAWAT
+// ==========================================
+
+L.marker(RAWAT)
+
+.addTo(map)
+
+.bindPopup(`
+
+<div class="popup">
+
+<img
+src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80"
+alt="Ruang Rawat"
+>
+
+<h3>
+🛏️ Ruang Rawat Pasien
+</h3>
+
+<p>
+<b>Nama:</b><br>
+Ruang Rawat Pasien
+</p>
+
+<p>
+<b>Fungsi:</b><br>
+Tempat pasien mendapatkan
+pelayanan rawat inap.
+</p>
+
+<p>
+<b>Lokasi:</b><br>
+Area gedung rawat inap.
+</p>
+
+<p>
+<b>Koordinat:</b><br>
+${RAWAT[0]}, ${RAWAT[1]}
+</p>
+
+<a
+class="btn"
+href="https://www.google.com/maps/search/?api=1&query=${RAWAT[0]},${RAWAT[1]}"
+target="_blank"
+>
+📍 Buka Google Maps
+</a>
+
+</div>
+
+`);
+
+
+// ==========================================
+// LEGENDA
+// ==========================================
+
+const legend =
+L.control({
+    position: "bottomright"
+});
+
+
+legend.onAdd = function() {
+
+    const div =
+    L.DomUtil.create(
+        "div",
+        "legend"
+    );
+
+
+    div.innerHTML = `
+
+    <b>LEGENDA</b><br>
+
+    🏥 Rumah Sakit<br>
+
+    🚑 UGD / IGD<br>
+
+    🚻 Toilet<br>
+
+    🛏️ Ruang Rawat
+
+    `;
+
+
+    return div;
+
+};
+
+
+legend.addTo(map);
+
+
+</script>
+
+
+</body>
+
+</html>
